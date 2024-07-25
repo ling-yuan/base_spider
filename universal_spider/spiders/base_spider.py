@@ -30,9 +30,9 @@ class BaseSpider(scrapy.Spider):
         logging.info(f"config: {self.config}")
 
     def start_requests(self):
-        '''
+        """
         根据初始化时的配置，生成请求顺序中的第一个请求
-        '''
+        """
         # 若无配置，则返回
         if self.stage_length == 0:
             return None
@@ -49,9 +49,9 @@ class BaseSpider(scrapy.Spider):
             yield req
 
     def _get_param_config(self, config_name: str, request_config: dict, item: dict, default=None, *args, **kwargs):
-        '''
+        """
         根据请求配置和当前item，生成请求参数
-        '''
+        """
         # ans = request_config.get(config_name, default)
         ans = request_config.pop(config_name, default)
         # ans = item.get(f"next_{config_name}", ans)
@@ -60,45 +60,29 @@ class BaseSpider(scrapy.Spider):
         return ans
 
     def _generate_request(self, request_config: dict, item: dict, *args, **kwargs):
-        '''
+        """
         根据请求配置和当前item，生成请求
-        '''
+        """
         # 深度拷贝请求参数和item
         request_config = deepcopy(request_config)
         item = deepcopy(item)
         # 获取上个阶段的内容
         content = kwargs.get("content", "")
         # 定义替换器
-        url_replacer = Replacer()
-        headers_replacer = Replacer()
-        params_query_replacer = Replacer()
-        params_json_replacer = Replacer()
-        params_form_replacer = Replacer()
+        replacer = Replacer()
         # 获取配置
-        iteration_times = int(self._get_param_config("iteration_times", request_config, item, 1))
-        url = self._get_param_config("url", request_config, item)
-        headers = self._get_param_config("headers", request_config, item, {})
-        params = self._get_param_config("params", request_config, item, {})
-        params_query = self._get_param_config("query", params, item, {})
-        params_json = self._get_param_config("json", params, item, {})
-        params_form = self._get_param_config("form", params, item, {})
+        config_fields = ["url", "type", "method", "headers", "iteration_times", "query_params", "json_params", "form_params"]
+        for config_field in config_fields:
+            default_value = 1 if config_field == "iteration_times" else None if config_field == "url" else {}
+            field_value = self._get_param_config(config_field, request_config, item, default_value)
+            request_config[config_field] = field_value
 
+        iteration_times = request_config.pop("iteration_times", 1)
         while iteration_times > 0:
             iteration_times -= 1
             new_item = deepcopy(item)
-            _, new_url = url_replacer.replace(url, content, item=item)
-            _, new_headers = headers_replacer.replace(headers, content, item=item)
-            _, new_params_query = params_query_replacer.replace(params_query, content, item=item)
-            _, new_params_json = params_json_replacer.replace(params_json, content, item=item)
-            _, new_params_form = params_form_replacer.replace(params_form, content, item=item)
+            _, new_request_config = replacer.replace(request_config, content, item=new_item)
             yield Request(
-                url=new_url,
-                headers=new_headers,
-                params={
-                    "query": new_params_query,
-                    "json": new_params_json,
-                    "form": new_params_form,
-                },
                 **request_config,
                 callback=self.parse,
                 cb_kwargs={
@@ -109,9 +93,9 @@ class BaseSpider(scrapy.Spider):
             )
 
     async def parse(self, response: Response, **kwargs):
-        '''
+        """
         解析当前响应，发送解析结果或下一阶段请求
-        '''
+        """
         # 获取当前阶段索引
         now_index = kwargs["now_index"]
         # 获取上一阶段发送的item
@@ -145,9 +129,9 @@ class BaseSpider(scrapy.Spider):
                 yield req
 
     async def update_item(self, base_item: dict, field_list: list, response_config: dict, response: Response):
-        '''
+        """
         根据当前响应内容以及字段配置，基于原item，更新item
-        '''
+        """
         item_copy = base_item.copy()
         for field_config in field_list:
             value = await self._parse_field(response, field_config, response_config)
@@ -155,28 +139,4 @@ class BaseSpider(scrapy.Spider):
                 item_copy[field_config["name"]] = value
             else:
                 if field_config["save_method"] == "replace":
-                    item_copy[field_config["name"]] = value
-                elif field_config["save_method"] == "append":
-                    item_copy[field_config["name"]] += value
-                else:
-                    item_copy[field_config["name"]] = value
-
-        item_list = []
-        max_len = max([len(value) for value in item_copy.values() if isinstance(value, Iterable)])
-        for k in item_copy.keys():
-            if len(item_copy[k]) == 1:
-                item_copy[k] *= max_len
-            elif len(item_copy[k]) != max_len:
-                raise Exception(f"字段 {k} 的长度不一致")
-        item_list = [{k: [value[i]] for k, value in item_copy.items()} for i in range(max_len)]
-        return item_list
-
-    async def _parse_field(self, response: Response, field_config: dict, response_config: dict):
-        '''
-        根据单个字段配置，解析并返回结果
-        '''
-        resp_type = response_config.get("type", "html")
-        data = response.text if resp_type == "html" else response.json()
-        replacer = Replacer()
-        _, new_value = replacer.replace(field_config["value"], data)
-        return new_value
+                    i
