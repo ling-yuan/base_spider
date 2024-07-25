@@ -5,11 +5,9 @@ default_stage_template = {
         "method": "",  # get/post...
         "iteration_times": 1,  # 当前阶段多个页面，迭代次数
         "headers": {},
-        "params": {
-            "query": {},
-            "json": {},
-            "form": {},
-        },
+        "query_params": {},
+        "json_params": {},
+        "form_params": {},
         "playwright_config": {},
         "dont_filter": True,
         "extract": {},
@@ -42,22 +40,3 @@ default_field_template = {
     ],
     "save_method": "",  # 字段解析后，保存方法  # replace、append、add 默认替换原本的同名字段
 }
-
-# def create_config(crawl_type, response_type):
-#     global times
-#     config = {}
-
-#     if crawl_type == "api":
-#         config['crawl_type'] = "api"
-#         if response_type == "json":
-#             config['response_type'] = "json"
-#         elif response_type == "html":
-#             config['response_type'] = "html"
-#         else:
-#             config['response_type'] = response_type
-#             logging.warning(f"抓取阶段{times}: 未知的响应类型{response_type}")
-#     elif crawl_type == "browser":
-#         config['crawl_type'] = "browser"
-#         config['response_type'] = "browser"
-#     else:
-#         raise Exception("抓取方式设置有误")
