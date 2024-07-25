@@ -45,7 +45,7 @@ class XPathParser:
         for item in tmp_list:
             if isinstance(item, etree._Element):
                 # 节点中的所有内容
-                value_list.append(etree.tostring(item, encoding='utf-8').decode('utf-8').strip())  # type: ignore
+                value_list.append(etree.tostring(item, encoding="utf-8").decode("utf-8").strip())  # type: ignore
             else:
                 value_list.append(item)
         return value_list if value_list else self.default_value

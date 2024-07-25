@@ -71,7 +71,16 @@ class BaseSpider(scrapy.Spider):
         # 定义替换器
         replacer = Replacer()
         # 获取配置
-        config_fields = ["url", "type", "method", "headers", "iteration_times", "query_params", "json_params", "form_params"]
+        config_fields = [
+            "url",
+            "type",
+            "method",
+            "headers",
+            "iteration_times",
+            "query_params",
+            "json_params",
+            "form_params",
+        ]
         for config_field in config_fields:
             default_value = 1 if config_field == "iteration_times" else None if config_field == "url" else {}
             field_value = self._get_param_config(config_field, request_config, item, default_value)
@@ -126,7 +135,9 @@ class BaseSpider(scrapy.Spider):
 
         # 循环每一项item
         for item in item_list:
-            for req in self._generate_request(request_config, item, now_index=now_index, response_config=response_config, content=content):
+            for req in self._generate_request(
+                request_config, item, now_index=now_index, response_config=response_config, content=content
+            ):
                 yield req
 
     async def update_item(self, base_item: dict, field_list: list, response_config: dict, response: Response):
@@ -157,9 +168,9 @@ class BaseSpider(scrapy.Spider):
         return item_list
 
     async def _parse_field(self, response: Response, field_config: dict, response_config: dict):
-        '''
+        """
         根据单个字段配置，解析并返回结果
-        '''
+        """
         resp_type = response_config.get("type", "html")
         data = response.text if resp_type == "html" else response.json()
         replacer = Replacer()

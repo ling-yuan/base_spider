@@ -42,25 +42,25 @@ class Function:
         return next_func_content, [str(func_params[0])]
 
     def now_timestamp(self, func_params="", *args, **kwargs):
-        '''获取当前时间戳'''
+        """获取当前时间戳"""
         return func_params, [str(int(time.time()))]
 
     def parse_jsonpath(self, data, jsonpath, *args, **kwargs):
-        '''解析jsonpath'''
+        """解析jsonpath"""
         json_parser = JsonParser()
         return json_parser.parse(data, jsonpath)
 
     def parse_xpath(self, data, xpath, *args, **kwargs):
-        '''解析xpath'''
+        """解析xpath"""
         xpath_parser = XPathParser()
         return xpath_parser.parse(data, xpath)
 
     def parse_regex(self, data, regex, *args, **kwargs):
-        '''解析正则'''
+        """解析正则"""
         regex_parser = RegexParser()
         return regex_parser.parse(data, regex)
 
     def parse_css(self, data, css, *args, **kwargs):
-        '''解析css'''
+        """解析css"""
         css_parser = CssParser()
         return css_parser.parse(data, css)

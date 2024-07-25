@@ -26,17 +26,11 @@ default_field_template = {
     "value": "",  # 字段值，其中可变值使用{}包裹  # {jsonpath:path} {xpath://table} {css:ul>li} {regex:[0-9]+} {var:var_name} {function:function_name(args)}
     "type": "",  # 字段类型  # str、json、date、file等
     "default": "",  # 默认值  # 默认为空
-    "befor_process": [  #字段解析前，顺序执行的前处理方法 # 可选，默认为空
-        {
-            "name": "",  # 处理方法名称
-            "args": ""  # 处理方法参数，其中可变值使用{}包裹
-        },
+    "befor_process": [  # 字段解析前，顺序执行的前处理方法 # 可选，默认为空
+        {"name": "", "args": ""},  # 处理方法名称  # 处理方法参数，其中可变值使用{}包裹
     ],
-    "after_process": [  #字段解析后，顺序执行的后处理方法 # 可选，默认为空
-        {
-            "name": "",  # 处理方法名称
-            "args": ""  # 处理方法参数，其中可变值使用{}包裹
-        },
+    "after_process": [  # 字段解析后，顺序执行的后处理方法 # 可选，默认为空
+        {"name": "", "args": ""},  # 处理方法名称  # 处理方法参数，其中可变值使用{}包裹
     ],
     "save_method": "",  # 字段解析后，保存方法  # replace、append、add 默认替换原本的同名字段
 }

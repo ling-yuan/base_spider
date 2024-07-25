@@ -3,7 +3,19 @@ import scrapy
 import scrapy.http
 
 
-def Request(url: str, type: str, method: str, callback, query_params: dict = {}, json_params: dict = {}, form_params: dict = {}, headers: dict = {}, meta: dict = {}, *args, **kwargs):
+def Request(
+    url: str,
+    type: str,
+    method: str,
+    callback,
+    query_params: dict = {},
+    json_params: dict = {},
+    form_params: dict = {},
+    headers: dict = {},
+    meta: dict = {},
+    *args,
+    **kwargs
+):
     """
     根据传入参数构造请求
 
@@ -22,7 +34,6 @@ def Request(url: str, type: str, method: str, callback, query_params: dict = {},
     cb_kwargs = kwargs.get("cb_kwargs", {})
     cookies = kwargs.get("cookies", {})
     dont_filter = kwargs.get("dont_filter", True)  # 默认不过滤
-
 
     # 构造请求
     if type == "api":
