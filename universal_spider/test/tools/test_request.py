@@ -184,4 +184,28 @@ class TestRequest:
         ans = scrapy.http.Request(
             url="https://127.0.0.1?key=value",
             method="POST",
-            callback=callb
+            callback=callback_example,
+            dont_filter=True,
+        )
+        assert req.__dict__ == ans.__dict__
+
+    def test_dont_filter(self):
+        """
+        测试dont_filter过滤参数
+        """
+        request_data = {
+            "type": "api",
+            "url": "https://127.0.0.1",
+            "iteration_times": 1,
+            "method": "get",
+            "callback": callback_example,
+            "dont_filter": False,
+        }
+        req = Request(**request_data)
+        ans = scrapy.http.Request(
+            url="https://127.0.0.1",
+            method="GET",
+            callback=callback_example,
+            dont_filter=False,
+        )
+        assert req.__dict__ == ans.__dict__
