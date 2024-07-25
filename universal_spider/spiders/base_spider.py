@@ -82,15 +82,16 @@ class BaseSpider(scrapy.Spider):
             iteration_times -= 1
             new_item = deepcopy(item)
             _, new_request_config = replacer.replace(request_config, content, item=new_item)
-            yield Request(
-                **request_config,
-                callback=self.parse,
-                cb_kwargs={
-                    "now_index": kwargs["now_index"],
-                    "item": new_item,
-                    "response_config": kwargs.get("response_config", {}),
-                },
-            )
+            for one_of_config in new_request_config:
+                yield Request(
+                    **one_of_config,
+                    callback=self.parse,
+                    cb_kwargs={
+                        "now_index": kwargs["now_index"],
+                        "item": new_item,
+                        "response_config": kwargs.get("response_config", {}),
+                    },
+                )
 
     async def parse(self, response: Response, **kwargs):
         """
