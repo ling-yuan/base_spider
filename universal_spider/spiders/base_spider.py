@@ -139,4 +139,28 @@ class BaseSpider(scrapy.Spider):
                 item_copy[field_config["name"]] = value
             else:
                 if field_config["save_method"] == "replace":
-                    i
+                    item_copy[field_config["name"]] = value
+                elif field_config["save_method"] == "append":
+                    item_copy[field_config["name"]] += value
+                else:
+                    item_copy[field_config["name"]] = value
+
+        item_list = []
+        max_len = max([len(value) for value in item_copy.values() if isinstance(value, Iterable)])
+        for k in item_copy.keys():
+            if len(item_copy[k]) == 1:
+                item_copy[k] *= max_len
+            elif len(item_copy[k]) != max_len:
+                raise Exception(f"字段 {k} 的长度不一致")
+        item_list = [{k: [value[i]] for k, value in item_copy.items()} for i in range(max_len)]
+        return item_list
+
+    async def _parse_field(self, response: Response, field_config: dict, response_config: dict):
+        '''
+        根据单个字段配置，解析并返回结果
+        '''
+        resp_type = response_config.get("type", "html")
+        data = response.text if resp_type == "html" else response.json()
+        replacer = Replacer()
+        _, new_value = replacer.replace(field_config["value"], data)
+        return new_value

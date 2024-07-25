@@ -139,3 +139,26 @@ class TestReplacer:
         assert new_value == value
         assert ans == ["18", "19", "20"]
 
+        value = "{var:class}"
+        new_value, ans = replacer.replace(value, jsondata, item=item)
+        assert new_value == value
+        assert ans == ["一班"]
+
+    def test_replace_muti_params(self, replacer: Replacer, htmldata, jsondata, item):
+        value = "页数：{function:add(5)} title： {jsonpath:$.list}"
+        new_value, ans = replacer.replace(value, jsondata, item=item)
+        assert new_value == "页数：{function:add(6)} title： {jsonpath:$.list}"
+        assert ans == [
+            "页数：5 title： 1",
+            "页数：5 title： 2",
+            "页数：5 title： 3",
+        ]
+
+        value = {"页码": "{function:add(5)}", "标题": "{jsonpath:$.list}"}
+        new_value, ans = replacer.replace(value, jsondata, item=item)
+        assert new_value == {"页码": "{function:add(6)}", "标题": "{jsonpath:$.list}"}
+        assert ans == [
+            {"页码": "5", "标题": "1"},
+            {"页码": "5", "标题": "2"},
+            {"页码": "5", "标题": "3"},
+        ]
