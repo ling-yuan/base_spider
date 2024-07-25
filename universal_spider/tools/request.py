@@ -3,7 +3,7 @@ import scrapy
 import scrapy.http
 
 
-def Request(url: str, type: str, method: str, callback, params: dict = {}, headers: dict = {}, meta: dict = {}, *args, **kwargs):
+def Request(url: str, type: str, method: str, callback, query_params: dict = {}, json_params: dict = {}, form_params: dict = {}, headers: dict = {}, meta: dict = {}, *args, **kwargs):
     """
     根据传入参数构造请求
 
@@ -23,10 +23,6 @@ def Request(url: str, type: str, method: str, callback, params: dict = {}, heade
     cookies = kwargs.get("cookies", {})
     dont_filter = kwargs.get("dont_filter", True)  # 默认不过滤
 
-    # 获取请求参数
-    query_params = params.get("query", {})
-    json_params = params.get("json", {})
-    form_params = params.get("form", {})
 
     # 构造请求
     if type == "api":
