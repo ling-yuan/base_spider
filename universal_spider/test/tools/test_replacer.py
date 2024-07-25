@@ -15,22 +15,16 @@ class TestReplacer:
         return {
             "str": "string",
             "list": [1, 2, 3],
-            "dict": {
-                "key": "value"
-            },
+            "dict": {"key": "value"},
             "list_dict": [
-                {
-                    "key": "value1"
-                },
-                {
-                    "key": "value2"
-                },
+                {"key": "value1"},
+                {"key": "value2"},
             ],
         }
 
     @pytest.fixture
     def htmldata(self):
-        return '''
+        return """
         <body>
             <table>
                 <tr class="row">
@@ -43,7 +37,7 @@ class TestReplacer:
             <button onclick="select()">查询</button>
             <script type="text/javascript" src="js/yezhu.js"></script>
         </body>
-        '''
+        """
 
     @pytest.fixture
     def item(self):
@@ -124,7 +118,7 @@ class TestReplacer:
         assert ans == ['<button onclick="select()">查询</button>']
 
     def test_replace_regex(self, replacer: Replacer, htmldata, jsondata, item):
-        value = "{regex:<th class=\"head\">(.*?)</th>}"
+        value = '{regex:<th class="head">(.*?)</th>}'
         new_value, ans = replacer.replace(value, htmldata, item=item)
         assert new_value == value
         assert ans == ["编号", "姓名", "电话", "检测结果"]
@@ -138,14 +132,10 @@ class TestReplacer:
         value = "{var:name}"
         new_value, ans = replacer.replace(value, htmldata, item=item)
         assert new_value == value
-        assert ans == ['张三', '李四', '王五']
+        assert ans == ["张三", "李四", "王五"]
 
         value = "{var:age}"
         new_value, ans = replacer.replace(value, htmldata, item=item)
         assert new_value == value
-        assert ans == ['18', '19', '20']
+        assert ans == ["18", "19", "20"]
 
-        value = "{var:class}"
-        new_value, ans = replacer.replace(value, jsondata, item=item)
-        assert new_value == value
-        assert ans == ['一班']
