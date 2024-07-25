@@ -1,3 +1,4 @@
+import sys_path
 import pytest
 import scrapy
 import scrapy.http
