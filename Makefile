@@ -26,15 +26,20 @@ export_requirements:
 	@echo "导出依赖..."
 	.venv\Scripts\python -m pip freeze > requirements.txt
 
-format_code:
+format_code: pre-commit
 	@echo "格式化代码..."
-	.venv\Scripts\black main.py --line-length 120
-	.venv\Scripts\black universal_spider --line-length 120
+# .venv\Scripts\black main.py --line-length 120
+# .venv\Scripts\black universal_spider --line-length 120
+	.venv\Scripts\pre-commit run --a
 
 .PHONY: test
 test:
 	@echo "单元测试..."
 	.venv\Scripts\pytest -q --tb=line -s
+
+pre-commit:
+	@echo "提交前检查..."
+	.venv\Scripts\pre-commit install
 
 # windows下有问题，待完善
 # clean:
