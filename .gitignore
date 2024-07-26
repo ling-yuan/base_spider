@@ -1,6 +1,15 @@
-/.pytest_cache
-/.vscode
-__pycache__/
+# vscode project files
+.vscode
+# pycharm project files
+.idea
 
+# virtual environment
+env
 .venv
 venv
+
+# pytest cache
+.pytest_cache
+
+# python bytecode
+__pycache__/
