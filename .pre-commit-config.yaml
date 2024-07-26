@@ -1,0 +1,23 @@
+# 设置默认的阶段为commit，只在提交时进行检查
+default_stages:
+- commit
+
+# 设置默认的语言版本，你也可以在每个repos中单独设置language_version
+# default_language_version:
+#   python: python3.7
+
+# 设置排除的文件，正则匹配，这个也可以在每个repos中的hooks脚本中单独配置，以灵活实现不同文件对不同规则的检测排除
+exclude: "^$"
+
+# 起码顶层配置，一般使用默认值即可。
+# 这个repos配置下面的内容，就是最重要的核心配置，下面细说
+repos:
+- repo: local
+  # 指定要使用的钩子脚本，这里使用的是black，也就是python的代码格式化工具
+  hooks:
+  - id: black
+    name: black format_code
+    entry: black
+    language: system
+    types: [python]
+    args: ["--line-length", "120"]
