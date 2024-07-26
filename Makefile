@@ -23,7 +23,7 @@ upgrade_packages:
 
 .PHONY: export_requirements
 export_requirements:
-	@echo "Exporting requirements..."
+	@echo "导出依赖..."
 	.venv\Scripts\python -m pip freeze > requirements.txt
 
 format_code:
@@ -33,8 +33,8 @@ format_code:
 
 .PHONY: test
 test:
-	@echo "Running test coverage..."
-	.venv\Scripts\pytest -v 
+	@echo "单元测试..."
+	.venv\Scripts\pytest -q --tb=line -s
 
 # windows下有问题，待完善
 # clean:
