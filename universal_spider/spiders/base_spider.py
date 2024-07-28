@@ -123,7 +123,12 @@ class BaseSpider(scrapy.Spider):
         # 若结束发送item
         if now_index >= self.stage_length:
             for item in item_list:
-                yield item
+                save_fields = response_config.get("save_fields", None)
+                if save_fields == None or save_fields == []:
+                    yield item
+                else:
+                    tmp_item = {k: v for k, v in item.items() if k in save_fields}
+                    yield tmp_item
             return
 
         # 未结束,获取下一阶段配置
@@ -150,9 +155,9 @@ class BaseSpider(scrapy.Spider):
             if field_config["name"] not in base_item.keys():
                 item_copy[field_config["name"]] = value
             else:
-                if field_config["save_method"] == "replace":
+                if field_config.get("save_method", "") == "replace":
                     item_copy[field_config["name"]] = value
-                elif field_config["save_method"] == "append":
+                elif field_config.get("save_method", "") == "append":
                     item_copy[field_config["name"]] += value
                 else:
                     item_copy[field_config["name"]] = value
