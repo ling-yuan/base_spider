@@ -1,7 +1,8 @@
 # 测试配置
+
 ## 博客园
 
-- [x] 成功运行
+* [x] 成功运行
 
 ```python
 [
@@ -56,7 +57,7 @@
 
 ## 武招通
 
-- [x] 成功运行
+* [x] 成功运行
 
 ```python
 [
@@ -112,5 +113,38 @@
             ],
         },
     },
+]
+```
+
+## Agemys
+
+* [x] 成功运行
+
+```python
+[
+    {
+        "request": {
+            "type": "api",
+            "url": "https://www.agedm.org/detail/20220286",
+            "method": "get",
+            "iteration_times": 1,
+        },
+        "response": {
+            "type": "html",
+            "fields": [
+                {
+                    "name": "id",
+                    "value": '{xpath://div[@class="tab-pane fade  show active "]/ul[@class="video_detail_episode"]/li/a/text()}',
+                    "type": "str",
+                },
+                {
+                    "name": "source_url",
+                    "value": '{xpath://div[@class="tab-pane fade  show active "]/ul[@class="video_detail_episode"]/li/a/@href}',
+                    "type": "str",
+                },
+            ],
+            "save_fields": ['source_url'],
+        },
+    }
 ]
 ```
