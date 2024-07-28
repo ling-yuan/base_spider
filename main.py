@@ -11,6 +11,5 @@ if __name__ == "__main__":
             "base_spider",
             "-a",
             "config=" + str(config),
-            "-o tmp.json",
         ]
     )
