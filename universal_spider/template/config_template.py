@@ -16,7 +16,7 @@ default_stage_template = {
         "type": "",  # json/html/browser
         "before_parse": [],
         "fields": [],  # 解析字段的列表 [default_field_template]
-        "save_fields": [],  # 保存字段的列表 上边所有解析后的字段最终需要保存的字段名称
+        "save_fields": [],  # 保存字段的列表 上边所有解析后的字段最终需要保存的字段名称 (仅最后阶段使用该值)
         "extract": {},
     },
 }
