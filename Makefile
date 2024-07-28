@@ -14,12 +14,12 @@ install_packages:
 	@echo "安装依赖..."
 	.venv\Scripts\pip install -r requirements.txt -i ${MIRROR}
 
-upgrade: upgrade_packages export_requirements
+upgrade: upgrade_packages
 
 upgrade_packages:
 	@echo "升级依赖..."
-	.venv\Scripts\python -m pip install --upgrade pip
-	.venv\Scripts\pip install --upgrade -r requirements.txt
+	.venv\Scripts\python -m pip install --upgrade pip -i ${MIRROR}
+	.venv\Scripts\pip install --upgrade -r requirements.txt -i ${MIRROR}
 
 .PHONY: export_requirements
 export_requirements:
@@ -28,9 +28,9 @@ export_requirements:
 
 format_code: pre-commit
 	@echo "格式化代码..."
+	.venv\Scripts\pre-commit run --a
 # .venv\Scripts\black main.py --line-length 120
 # .venv\Scripts\black universal_spider --line-length 120
-	.venv\Scripts\pre-commit run --a
 
 .PHONY: test
 test:
