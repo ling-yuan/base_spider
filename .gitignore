@@ -13,3 +13,9 @@ venv
 
 # python bytecode
 __pycache__/
+
+# temp files
+tmp*.*
+temp*.*
+tmp*/
+temp*/
