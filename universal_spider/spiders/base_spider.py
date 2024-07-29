@@ -7,6 +7,7 @@ from scrapy.http.response import Response
 from universal_spider.tools.parse import *
 from universal_spider.tools.replacer import Replacer
 from universal_spider.tools.request import *
+from universal_spider.items.base_item import BaseItem
 
 
 class BaseSpider(scrapy.Spider):
@@ -102,6 +103,20 @@ class BaseSpider(scrapy.Spider):
                     },
                 )
 
+    def gennerate_item(self, item_dict, *args, **kwargs):
+        item = BaseItem()
+        for k, v in item_dict.items():
+            if isinstance(v, dict):
+                item[k] = v
+            elif isinstance(v, list):
+                if len(v) == 1:
+                    item[k] = v[0]
+                else:
+                    item[k] = v
+            else:
+                item[k] = v
+        return item
+
     async def parse(self, response: Response, **kwargs):
         """
         解析当前响应，发送解析结果或下一阶段请求
@@ -125,10 +140,10 @@ class BaseSpider(scrapy.Spider):
             for item in item_list:
                 save_fields = response_config.get("save_fields", None)
                 if save_fields == None or save_fields == []:
-                    yield item
+                    yield self.gennerate_item(item)
                 else:
                     tmp_item = {k: v for k, v in item.items() if k in save_fields}
-                    yield tmp_item
+                    yield self.gennerate_item(tmp_item)
             return
 
         # 未结束,获取下一阶段配置
