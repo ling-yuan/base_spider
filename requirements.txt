@@ -1,4 +1,4 @@
-attrs==23.2.0
+﻿attrs==23.2.0
 Automat==22.10.0
 black==24.4.2
 certifi==2024.7.4
@@ -41,6 +41,7 @@ pyasn1_modules==0.4.0
 pycparser==2.22
 PyDispatcher==2.0.7
 pymongo==4.8.0
+PyMySQL==1.1.1
 pyOpenSSL==24.2.1
 pytest==8.3.2
 PyYAML==6.0.1

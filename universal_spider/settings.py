@@ -52,12 +52,14 @@ REDIRECT_MAX_TIMES = 5
 
 # 管道所需参数
 from universal_spider.Info.mongo import *
+from universal_spider.Info.mysql import *
 
 # 管道
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     # "universal_spider.pipelines.UniversalSpiderPipeline": 300,
     "universal_spider.pipelines.mongo_pipeline.MongoPipeline": 100,
+    "universal_spider.pipelines.mysql_pipeline.MySQLPipeline": 200,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

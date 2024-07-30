@@ -23,7 +23,7 @@ class MongoPipeline:
             self.collection.drop()
             logger("MongoPipeline").info(f"MongoDB collection {self.settings.get('MONGO_COLLECTION_NAME')} cleared")
 
-        logger("MongoPipeline").info(f"MongoDB connection established: {self.mongo_uri}")
+        logger("MongoPipeline").info(f"MongoDB: {self.mongo_uri}")
         logger("MongoPipeline").info(f"MongoPipeline is opened")
 
     def close_spider(self, spider: Spider):
