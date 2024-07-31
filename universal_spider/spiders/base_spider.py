@@ -1,12 +1,9 @@
 import ast
 from copy import deepcopy
-import logging
 from typing import Any, Iterable
 import scrapy
 from scrapy.http.response import Response
-from universal_spider.tools.parse import *
-from universal_spider.tools.replacer import Replacer
-from universal_spider.tools.request import *
+from universal_spider.tools import *
 from universal_spider.items.base_item import BaseItem
 
 
@@ -28,7 +25,7 @@ class BaseSpider(scrapy.Spider):
             raise TypeError("config must be a list")
         # 初始化
         self.stage_length = len(self.config)
-        logging.info(f"config: {self.config}")
+        logger("init").info(f"config: {self.config}")
 
     def start_requests(self):
         """
