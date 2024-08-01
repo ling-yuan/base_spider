@@ -27,6 +27,7 @@ class BaseSpider(scrapy.Spider):
         if not isinstance(self.config, list):
             raise TypeError("config must be a list")
         # 初始化
+
         self.stage_length = len(self.config)
         logging.info(f"config: {self.config}")
 
