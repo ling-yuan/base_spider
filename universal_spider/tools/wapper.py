@@ -2,21 +2,26 @@ import time
 from universal_spider.tools import logger
 
 
-def retry_wapper(func):
+def retry_wapper(times=5, delay=1):
     """
     重试装饰器
 
     :param func: 函数
     """
 
-    def wrapper(*args, **kwargs):
-        for i in range(5):
-            try:
-                return func(*args, **kwargs)
-            except Exception as e:
-                logger(func.__name__).error(f"第{i + 1}次执行失败: {e}")
-        logger(func.__name__).error("执行5次失败")
-        raise Exception("执行5次失败")
+    def wrapper(func):
+        def inner(*args, **kwargs):
+            i = 0
+            while (i := i + 1) <= times:
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    logger(func.__name__).error(f"第{i}次执行失败: {e}")
+                    time.sleep(delay)
+            logger(func.__name__).error(f"执行{times}次后仍失败")
+            raise Exception(f"执行{times}次后仍失败")
+
+        return inner
 
     return wrapper
 
@@ -32,7 +37,7 @@ def time_wapper(func):
         start_time = time.time()
         result = func(*args, **kwargs)
         end_time = time.time()
-        logger(func.__name__).info(f"执行时间: {end_time - start_time}秒")
+        logger(func.__name__).info(f"执行时间: {end_time - start_time:.3f}秒")
         return result
 
     return wrapper
@@ -51,3 +56,19 @@ def run_now_wapper(func):
         logger(func.__name__).error(f"立即执行失败: {e}")
         raise e
     return func
+
+
+def catch_wapper(func):
+    """
+    捕获异常装饰器，捕获异常但不抛出异常
+
+    :param func: 函数
+    """
+
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            logger(func.__name__).error(f"捕获异常: {e}")
+
+    return wrapper
