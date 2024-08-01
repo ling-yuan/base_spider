@@ -41,10 +41,14 @@ REDIRECT_ENABLED = False
 COOKIES_REDIRECT_ENABLED = True
 REDIRECT_MAX_TIMES = 5
 
+# 额外所需参数 (中间件，扩展，管道)
+from universal_spider.Info import *
+
 # 下载中间件 小->大
 DOWNLOADER_MIDDLEWARES = {
     # "universal_spider.middlewares.UniversalSpiderDownloaderMiddleware": 543,
     "universal_spider.middlewares.UserAgentMiddleWare": 100,
+    "universal_spider.middlewares.ProxyMiddleware": 200,
 }
 
 # 扩展
@@ -52,9 +56,6 @@ DOWNLOADER_MIDDLEWARES = {
 # EXTENSIONS = {
 #    "scrapy.extensions.telnet.TelnetConsole": None,
 # }
-
-# 管道所需参数
-from universal_spider.Info import *
 
 # 管道
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
