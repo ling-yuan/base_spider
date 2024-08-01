@@ -1,11 +1,9 @@
-import random
-
 from scrapy import Request, Spider
 
 from universal_spider.tools import header
 
 
-class UserAgentMiddleWare:
+class UserAgentMiddleWare(object):
     """
     利用fake_useragent,随机生成User-Agent
     """

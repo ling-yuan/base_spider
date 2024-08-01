@@ -4,6 +4,7 @@ default_stage_template = {
         "url": "",
         "method": "",  # get/post...
         "iteration_times": 1,  # 当前阶段多个页面，迭代次数
+        "meta": {},  # 当前阶段请求的meta信息，用于传递给下一阶段
         "headers": {},
         "query_params": {},
         "json_params": {},

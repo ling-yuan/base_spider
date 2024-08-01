@@ -26,7 +26,9 @@ COOKIES_ENABLED = False
 DEFAULT_REQUEST_HEADERS = {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
     "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",  # 部分网站根据这个字段返回不同的内容
-    "Accept-Encoding": "gzip, deflate",
+    "Accept-Encoding": "gzip, deflate, br, zstd",
+    # "Accept-Encoding": "gzip, deflate",
+    "cache-control": "no-cache",
 }
 
 # 爬虫中间件 小->大

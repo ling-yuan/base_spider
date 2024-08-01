@@ -19,3 +19,5 @@ tmp*.*
 temp*.*
 tmp*/
 temp*/
+# don't ignore template folder
+!template
