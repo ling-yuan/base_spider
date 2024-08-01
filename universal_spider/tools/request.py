@@ -1,6 +1,7 @@
 from urllib.parse import urlencode
 import scrapy
 import scrapy.http
+from fake_useragent import UserAgent
 
 
 def Request(
@@ -85,3 +86,12 @@ def Request(
         pass
 
     raise NotImplementedError("Request Method not implemented")
+
+
+def header(dict=True):
+    """获取随机请求头"""
+    if dict:
+        headers = {"User-Agent": UserAgent().random}
+    else:
+        headers = UserAgent().random
+    return headers

@@ -47,6 +47,7 @@ class MySQLPipeline:
 
     def close_spider(self, spider: Spider):
         self.cursor.close()
+        logger("MySQLPipeline").info(f"MySQLPipeline is closed")
 
     def process_item(self, item: Item, spider: Spider):
         id = uuid.uuid4().hex

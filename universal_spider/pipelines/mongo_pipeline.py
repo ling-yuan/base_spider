@@ -17,13 +17,13 @@ class MongoPipeline:
         self.connection = MongoClient(self.mongo_uri)
         self.db = self.connection[self.settings.get("MONGO_DB_NAME")]
         self.collection = self.db[self.settings.get("MONGO_COLLECTION_NAME")]
+        logger("MongoPipeline").info(f"MongoDB: {self.mongo_uri}")
 
         # 根据设置选择是否清空原数据
         if self.settings.get("MONGO_CLEAR_DB", False):
             self.collection.drop()
             logger("MongoPipeline").info(f"MongoDB collection {self.settings.get('MONGO_COLLECTION_NAME')} cleared")
 
-        logger("MongoPipeline").info(f"MongoDB: {self.mongo_uri}")
         logger("MongoPipeline").info(f"MongoPipeline is opened")
 
     def close_spider(self, spider: Spider):
