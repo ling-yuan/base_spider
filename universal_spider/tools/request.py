@@ -88,7 +88,10 @@ def Request(
     raise NotImplementedError("Request Method not implemented")
 
 
-def header():
+def header(dict=True):
     """获取随机请求头"""
-    headers = {"user-agent": UserAgent().random}
+    if dict:
+        headers = {"User-Agent": UserAgent().random}
+    else:
+        headers = UserAgent().random
     return headers
