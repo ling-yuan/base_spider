@@ -75,6 +75,7 @@ class BaseSpider(scrapy.Spider):
             "method",
             "headers",
             "iteration_times",
+            "meta",
             "query_params",
             "json_params",
             "form_params",
@@ -88,7 +89,7 @@ class BaseSpider(scrapy.Spider):
         while iteration_times > 0:
             iteration_times -= 1
             new_item = deepcopy(item)
-            _, new_request_config = replacer.replace(request_config, content, item=new_item)
+            request_config, new_request_config = replacer.replace(request_config, content, item=new_item)
             for one_of_config in new_request_config:
                 yield Request(
                     **one_of_config,

@@ -125,9 +125,9 @@
     {
         "request": {
             "type": "api",
-            "url": "https://www.agedm.org/detail/20220286",
+            "url": "https://www.agedm.org/detail/2022028{function:add(6,1)}",
             "method": "get",
-            "iteration_times": 1,
+            "iteration_times": 2,
         },
         "response": {
             "type": "html",
@@ -143,8 +143,9 @@
                     "type": "str",
                 },
             ],
-            "save_fields": ['source_url'],
+            "save_fields": ["source_url"],
         },
     }
 ]
+
 ```
