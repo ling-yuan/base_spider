@@ -4,7 +4,7 @@ from typing import Any, Iterable
 import scrapy
 from scrapy.http.response import Response
 from universal_spider.tools import *
-from universal_spider.items.base_item import BaseItem
+from universal_spider.items import BaseItem
 
 
 class BaseSpider(scrapy.Spider):

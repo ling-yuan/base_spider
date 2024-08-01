@@ -40,9 +40,10 @@ COOKIES_REDIRECT_ENABLED = True
 REDIRECT_MAX_TIMES = 5
 
 # 下载中间件 小->大
-# DOWNLOADER_MIDDLEWARES = {
-#    "universal_spider.middlewares.UniversalSpiderDownloaderMiddleware": 543,
-# }
+DOWNLOADER_MIDDLEWARES = {
+    # "universal_spider.middlewares.UniversalSpiderDownloaderMiddleware": 543,
+    "universal_spider.middlewares.UserAgentMiddleWare": 100,
+}
 
 # 扩展
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
@@ -51,15 +52,14 @@ REDIRECT_MAX_TIMES = 5
 # }
 
 # 管道所需参数
-from universal_spider.Info.mongo import *
-from universal_spider.Info.mysql import *
+from universal_spider.Info import *
 
 # 管道
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     # "universal_spider.pipelines.UniversalSpiderPipeline": 300,
-    "universal_spider.pipelines.mongo_pipeline.MongoPipeline": 100,
-    "universal_spider.pipelines.mysql_pipeline.MySQLPipeline": 200,
+    "universal_spider.pipelines.MongoPipeline": 100,
+    "universal_spider.pipelines.MySQLPipeline": 200,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
