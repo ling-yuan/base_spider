@@ -6,6 +6,8 @@ default_stage_template = {
         "iteration_times": 1,  # 当前阶段多个页面，迭代次数
         "meta": {
             "proxy": "",  # 当前阶段请求的代理
+            "dont_redirect": False,  # 当前阶段请求是否重定向
+            "redirect_ttl": 5,  # 当前阶段请求最大重定向次数
         },  # 当前阶段请求的meta信息，用于传递给下一阶段
         "headers": {},
         "query_params": {},

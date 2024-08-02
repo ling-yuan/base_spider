@@ -2,6 +2,8 @@
 
 ## 博客园
 
+`解析参数`
+
 * [x] 成功运行
 
 ```python
@@ -56,6 +58,8 @@
 ```
 
 ## 武招通
+
+`参数使用`
 
 * [x] 成功运行
 
@@ -118,6 +122,8 @@
 
 ## Agemys
 
+`多页问题`
+
 * [x] 成功运行
 
 ```python
@@ -151,7 +157,9 @@
 
 ## Agemys
 
-- [ ] 成功运行
+`多阶段` `重定向`
+
+* [X] 成功运行
 
 ```python
 [
@@ -187,6 +195,9 @@
             "url": "{var:next_url}",
             "method": "get",
             "iteration_times": 2,
+            "meta": {
+                "proxy": "",
+            },
         },
         "response": {
             "type": "html",
@@ -202,8 +213,8 @@
                     "type": "str",
                 },
             ],
-            "save_fields": ["name","video_title","source_url"],
+            "save_fields": ["name", "video_title", "source_url"],
         },
-    }
+    },
 ]
 ```

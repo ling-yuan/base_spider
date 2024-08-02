@@ -36,10 +36,12 @@ DEFAULT_REQUEST_HEADERS = {
 #    "universal_spider.middlewares.UniversalSpiderSpiderMiddleware": 543,
 # }
 
+# 参数
 # 重定向
 REDIRECT_ENABLED = False
-COOKIES_REDIRECT_ENABLED = True
 REDIRECT_MAX_TIMES = 5
+# 响应正常码
+ALLOWED_STATUS_LIST = []
 
 # 额外所需参数 (中间件，扩展，管道)
 from universal_spider.Info import *
@@ -49,6 +51,7 @@ DOWNLOADER_MIDDLEWARES = {
     # "universal_spider.middlewares.UniversalSpiderDownloaderMiddleware": 543,
     "universal_spider.middlewares.UserAgentMiddleWare": 100,
     "universal_spider.middlewares.ProxyMiddleware": 200,
+    "universal_spider.middlewares.CookiesRedirectMiddleware": 550,
 }
 
 # 扩展
