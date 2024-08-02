@@ -5,7 +5,7 @@ MIRROR = https://pypi.tuna.tsinghua.edu.cn/simple
 ifeq ($(OS),Windows_NT)
 	VENV_PATH = .venv/Scripts
 else
-	VENV_PATH = source .venv/bin
+	VENV_PATH = .venv/bin
 endif
 
 setup: venv install 
