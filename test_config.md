@@ -148,3 +148,62 @@
     }
 ]
 ```
+
+## Agemys
+
+- [ ] 成功运行
+
+```python
+[
+    {
+        "request": {
+            "type": "api",
+            "url": "https://www.agedm.org/",
+            "method": "GET",
+            "iteration_times": 1,
+            "meta": {
+                "proxy": "",
+            },
+        },
+        "response": {
+            "type": "html",
+            "fields": [
+                {
+                    "name": "name",
+                    "value": '{xpath://div[@class="video_item"]/div[2]/a/text()}',
+                    "type": "str",
+                },
+                {
+                    "name": "next_url",
+                    "value": '{xpath://div[@class="video_item"]/div[2]/a/@href}',
+                    "type": "str",
+                },
+            ],
+        },
+    },
+    {
+        "request": {
+            "type": "api",
+            "url": "{var:next_url}",
+            "method": "get",
+            "iteration_times": 2,
+        },
+        "response": {
+            "type": "html",
+            "fields": [
+                {
+                    "name": "video_title",
+                    "value": '{xpath://div[@class="tab-pane fade  show active "]/ul[@class="video_detail_episode"]/li/a/text()}',
+                    "type": "str",
+                },
+                {
+                    "name": "source_url",
+                    "value": '{xpath://div[@class="tab-pane fade  show active "]/ul[@class="video_detail_episode"]/li/a/@href}',
+                    "type": "str",
+                },
+            ],
+            "save_fields": ["name","video_title","source_url"],
+        },
+    }
+]
+```

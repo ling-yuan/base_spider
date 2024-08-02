@@ -29,7 +29,7 @@ def Request(
     # 检查参数
     if type not in ["api", "browser"]:
         raise TypeError("Request Type must be 'api' or 'browser'")
-    if type == "api" and method not in ["get", "post", ...]:
+    if type == "api" and method.lower() not in ["get", "post", ...]:
         raise TypeError("Request Method must be 'get' or 'post'")
 
     cb_kwargs = kwargs.get("cb_kwargs", {})
