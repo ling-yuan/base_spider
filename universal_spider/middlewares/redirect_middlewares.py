@@ -29,13 +29,43 @@ class CookiesRedirectMiddleware(RedirectMiddleware):
         # 允许的通过的响应码
         self.allowed_status_list = settings.getlist("ALLOWED_STATUS_LIST")
 
+    def process_response(self, request: Request, response: Response, spider: Spider):
+        # 响应码
+        statue_code = response.status
+        # 根据请求中设置是否重定向
+        if request.meta.get("dont_redirect", False):
+            return response
+
+        # 如果响应中不包含重定向信息，则直接返回响应
+        if ("Location" not in response.headers) or (statue_code not in (301, 302, 303, 307, 308)):
+            return response
+
+        # 获取重定向地址
+        location = safe_url_string(response.headers["Location"])
+        # 如果重定向地址以//开头，则添加协议（补全）
+        if response.headers["Location"].startswith(b"//"):
+            # 获取请求的协议
+            request_scheme = urlparse(request.url).scheme
+            # 拼接重定向地址
+            location = request_scheme + "://" + location.lstrip("/")
+
+        # 如果重定向地址不包含协议，则返回响应
+        redirect_url = urljoin(request.url, location)
+        if urlparse(redirect_url).scheme not in {"http", "https"}:
+            return response
+
+        # 生成重定向请求
+        redirected = _build_redirect_request(request, url=redirect_url)
+        # 返回处理后的重定向请求
+        return self._redirect(redirected, request, spider, response)
+
     def _redirect(self, redirected: Request, request: Request, spider: Spider, response: Response):
         # 响应码
         reason = response.status
         # 最大重定向次数
         ttl = request.meta.setdefault("redirect_ttl", self.max_redirect_times)
         # 当前重定向次数
-        redirects = request.meta.get("redirect_times", 0) + 1
+        redirects = request.meta.get("redirect_times", 1)
 
         # 如果重定向次数小于最大重定向次数
         if ttl and redirects <= self.max_redirect_times:
@@ -79,33 +109,3 @@ class CookiesRedirectMiddleware(RedirectMiddleware):
         # 重定向次数达到最大，抛出异常
         logger("CookiesRedirectMiddleware").debug(f"ignore {request}: max redirections reached")
         raise IgnoreRequest("max redirections reached")
-
-    def process_response(self, request: Request, response: Response, spider: Spider):
-        # 响应码
-        statue_code = response.status
-        # 根据请求中设置是否重定向
-        if request.meta.get("dont_redirect", False):
-            return response
-
-        # 如果响应中不包含重定向信息，则直接返回响应
-        if ("Location" not in response.headers) or (statue_code not in (301, 302, 303, 307, 308)):
-            return response
-
-        # 获取重定向地址
-        location = safe_url_string(response.headers["Location"])
-        # 如果重定向地址以//开头，则添加协议（补全）
-        if response.headers["Location"].startswith(b"//"):
-            # 获取请求的协议
-            request_scheme = urlparse(request.url).scheme
-            # 拼接重定向地址
-            location = request_scheme + "://" + location.lstrip("/")
-
-        # 如果重定向地址不包含协议，则返回响应
-        redirect_url = urljoin(request.url, location)
-        if urlparse(redirect_url).scheme not in {"http", "https"}:
-            return response
-
-        # 生成重定向请求
-        redirected = _build_redirect_request(request, url=redirect_url)
-        # 返回处理后的重定向请求
-        return self._redirect(redirected, request, spider, response)
