@@ -2,6 +2,7 @@ colorlog
 fake_useragent
 jsonpath_ng
 lxml
+pre-commit
 pymongo
 pymysql
 scrapy
