@@ -1,6 +1,7 @@
 from urllib.parse import urljoin, urlparse
 from scrapy import Request, Spider
 from scrapy.http import Response
+from scrapy.settings import Settings
 from scrapy.downloadermiddlewares.redirect import RedirectMiddleware
 from scrapy.downloadermiddlewares.redirect import _build_redirect_request
 from scrapy.exceptions import IgnoreRequest
@@ -13,7 +14,7 @@ class CookiesRedirectMiddleware(RedirectMiddleware):
     重定向中间件，支持cookies传递
     """
 
-    def __init__(self, settings):
+    def __init__(self, settings: Settings):
         # 重定向次数
         self.max_redirect_times = settings.getint("REDIRECT_MAX_TIMES")
         # 重定向优先级调整

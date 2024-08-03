@@ -12,7 +12,7 @@ class UserAgentMiddleWare(object):
         # 如果请求中有User-Agent，则不设置
         if request.headers.get("User-Agent"):
             return
-        # random.choice随机的选取列表中的一个数据
+        # 生成UA
         agent = header(False)
-        # request.headers，设置了请求头
+        # 设置请求头
         request.headers["User-Agent"] = agent

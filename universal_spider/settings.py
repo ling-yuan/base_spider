@@ -11,7 +11,7 @@ ROBOTSTXT_OBEY = False
 CONCURRENT_REQUESTS = 8
 
 # 下载延迟
-DOWNLOAD_DELAY = 3
+# DOWNLOAD_DELAY = 3
 # 下载延迟设置将仅遵循以下之一:
 # CONCURRENT_REQUESTS_PER_DOMAIN = 16
 # CONCURRENT_REQUESTS_PER_IP = 16
@@ -37,11 +37,16 @@ DEFAULT_REQUEST_HEADERS = {
 # }
 
 # 参数
-# 重定向
+## 重定向
 REDIRECT_ENABLED = False
 REDIRECT_MAX_TIMES = 5
-# 响应正常码
+## 响应正常码
 ALLOWED_STATUS_LIST = []
+## 随机延时
+### 开启状态
+RANDOM_DELAY = False
+### 范围
+RANDOM_DELAY_RANGE = (0, 3)
 
 # 额外所需参数 (中间件，扩展，管道)
 from universal_spider.Info import *
@@ -49,9 +54,13 @@ from universal_spider.Info import *
 # 下载中间件 小->大
 DOWNLOADER_MIDDLEWARES = {
     # "universal_spider.middlewares.UniversalSpiderDownloaderMiddleware": 543,
+    # process request
     "universal_spider.middlewares.UserAgentMiddleWare": 100,
     "universal_spider.middlewares.ProxyMiddleware": 200,
-    "universal_spider.middlewares.CookiesRedirectMiddleware": 550,
+    "universal_spider.middlewares.RandomDelayMiddleware": 300,
+    # process response
+    # "universal_spider.middlewares.StatisticsMiddleware": 1,
+    "universal_spider.middlewares.CookiesRedirectMiddleware": 600,
 }
 
 # 扩展
