@@ -11,14 +11,6 @@ from universal_spider.tools import logger
 class CookiesRedirectMiddleware(RedirectMiddleware):
     """
     重定向中间件，支持cookies传递
-
-    COOKIES_REDIRECT_ENABLED = True # 启用cookies重定向
-
-    使用方法：
-    1. 在settings.py中添加：
-    DOWNLOADER_MIDDLEWARES = {
-        'spider_kit.middlewares.redirect_middleware.CookiesRedirectMiddleware': 543,
-    }
     """
 
     def __init__(self, settings):
@@ -66,7 +58,6 @@ class CookiesRedirectMiddleware(RedirectMiddleware):
         ttl = request.meta.setdefault("redirect_ttl", self.max_redirect_times)
         # 当前重定向次数
         redirects = request.meta.get("redirect_times", 1)
-
         # 如果重定向次数小于最大重定向次数
         if ttl and redirects <= self.max_redirect_times:
             # 设置当前重定向次数
