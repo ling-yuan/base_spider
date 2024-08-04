@@ -14,7 +14,7 @@ venv:
 	@echo "创建虚拟环境..."
 	virtualenv -p python3 .venv
 
-install: install_packages upgrade format_code
+install: install_packages upgrade
 
 install_packages:
 	@echo "安装依赖..."
