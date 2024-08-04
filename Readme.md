@@ -20,11 +20,11 @@ make install
 
 > [!note]
 >
-> 配置模板参考: `universal_spider/template/config_template.py`
+> 配置模板参考: [配置模板](./universal_spider/template/config_template.py)
 > 
 > 配置字段文档: [配置详解](./doc/配置详解.md)
 >
-> 测试配置: `doc/test_config.md`
+> 测试配置: [测试配置](./doc/test_config.md)
 > 
 
 # 待办
