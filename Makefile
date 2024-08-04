@@ -41,7 +41,7 @@ format_code: pre-commit
 .PHONY: test
 test:
 	@echo "单元测试..."
-	${VENV_PATH}/pytest -q --tb=line -s
+	${VENV_PATH}/pytest -q --tb=line -s -vv
 
 pre-commit:
 	@echo "提交前检查..."
