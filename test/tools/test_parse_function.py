@@ -107,6 +107,15 @@ class TestFunction(object):
             "<th>检测结果</th>",
             "<th>检测时间</th>",
         ]
+        xpath = "//th/text()|//button/@onclick"
+        assert function.parse_xpath(htmldata, xpath) == [
+            "编号",
+            "姓名",
+            "电话",
+            "检测结果",
+            "检测时间",
+            "select()",
+        ]
         xpath = "//error"
         assert function.parse_xpath(htmldata, xpath) == []
 
