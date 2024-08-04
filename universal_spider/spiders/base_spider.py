@@ -1,5 +1,6 @@
 import ast
 from copy import deepcopy
+from functools import reduce
 from typing import Any, Iterable
 import scrapy
 from scrapy.http.response import Response
@@ -165,6 +166,15 @@ class BaseSpider(scrapy.Spider):
         item_copy = base_item.copy()
         for field_config in field_list:
             value = await self._parse_field(response, field_config, response_config)
+            save_length = field_config.get("save_length", 0)
+            if save_length == 1 or save_length == "1":
+                value = reduce(lambda x, y: x + y, value)
+                value = [value]
+            elif save_length == 0 or save_length == "0":
+                pass
+            else:
+                logger(self.__class__.__name__).error(f"save_length must be 0 or 1, got {save_length}")
+                raise ValueError(f"save_length must be 0 or 1, got {save_length}")
             if field_config["name"] not in base_item.keys():
                 item_copy[field_config["name"]] = value
             else:

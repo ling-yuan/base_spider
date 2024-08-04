@@ -37,5 +37,6 @@ default_field_template = {
     "after_process": [  # 字段解析后，顺序执行的后处理方法 # 可选，默认为空
         {"name": "", "args": ""},  # 处理方法名称  # 处理方法参数，其中可变值使用{}包裹
     ],
+    "save_length": 0,  # 字段长度，默认为0，表示不限制 (1表示所有匹配生成的列表合并，其余值均不合法)
     "save_method": "",  # 字段解析后，保存方法  # replace、append、add 默认替换原本的同名字段
 }
