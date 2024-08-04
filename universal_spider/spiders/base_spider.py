@@ -102,20 +102,6 @@ class BaseSpider(scrapy.Spider):
                     },
                 )
 
-    def gennerate_item(self, item_dict, *args, **kwargs):
-        item = BaseItem()
-        for k, v in item_dict.items():
-            if isinstance(v, dict):
-                item[k] = v
-            elif isinstance(v, list):
-                if len(v) == 1:
-                    item[k] = v[0]
-                else:
-                    item[k] = v
-            else:
-                item[k] = v
-        return item
-
     async def parse(self, response: Response, **kwargs):
         """
         解析当前响应，发送解析结果或下一阶段请求
@@ -131,7 +117,7 @@ class BaseSpider(scrapy.Spider):
         # 获取当前响应的内容
         content = response.text if response_config.get("type", "html") else response.json()
         # 基于base_item，生成新item列表（一个或多个）
-        item_list = await self.update_item(base_item, field_list, response_config, response)
+        item_list = await self._update_item(base_item, field_list, response_config, response)
         # 当前阶段处理完成
         now_index += 1
         # 若结束发送item
@@ -139,10 +125,10 @@ class BaseSpider(scrapy.Spider):
             for item in item_list:
                 save_fields = response_config.get("save_fields", None)
                 if save_fields == None or save_fields == []:
-                    yield self.gennerate_item(item)
+                    yield self._gennerate_item(item)
                 else:
                     tmp_item = {k: v for k, v in item.items() if k in save_fields}
-                    yield self.gennerate_item(tmp_item)
+                    yield self._gennerate_item(tmp_item)
             return
 
         # 未结束,获取下一阶段配置
@@ -159,7 +145,21 @@ class BaseSpider(scrapy.Spider):
             ):
                 yield req
 
-    async def update_item(self, base_item: dict, field_list: list, response_config: dict, response: Response):
+    def _gennerate_item(self, item_dict, *args, **kwargs):
+        item = BaseItem()
+        for k, v in item_dict.items():
+            if isinstance(v, dict):
+                item[k] = v
+            elif isinstance(v, list):
+                if len(v) == 1:
+                    item[k] = v[0]
+                else:
+                    item[k] = v
+            else:
+                item[k] = v
+        return item
+
+    async def _update_item(self, base_item: dict, field_list: list, response_config: dict, response: Response):
         """
         根据当前响应内容以及字段配置，基于原item，更新item
         """
