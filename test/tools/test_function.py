@@ -1,13 +1,13 @@
 import sys_path
 import pytest
-from universal_spider.tools.function import Function
+from universal_spider.tools.parse_funtion import ParseFunction
 
 
 class TestFunction(object):
 
     @pytest.fixture
     def function(self):
-        return Function()
+        return ParseFunction()
 
     @pytest.fixture
     def jsondata(self):
@@ -39,7 +39,7 @@ class TestFunction(object):
         </body>
         """
 
-    def test_function_dict(self, function):
+    def test_function_dict(self, function: ParseFunction):
         """
         测试function_dict, 是否自动注册函数到字典中
         """
@@ -53,7 +53,7 @@ class TestFunction(object):
             "parse_css": function.parse_css,
         }
 
-    def test_add(self, function):
+    def test_add(self, function: ParseFunction):
         """
         测试add函数
         """
@@ -61,13 +61,13 @@ class TestFunction(object):
         assert function.add("3,2") == ("5,2", ["3"])
         assert function.add("4") == ("5", ["4"])
 
-    def test_now_timestamp(self, function):
+    def test_now_timestamp(self, function: ParseFunction):
         """
         测试now_timestamp函数
         """
         pass
 
-    def test_parse_jsonpath(self, function: Function, jsondata, htmldata):
+    def test_parse_jsonpath(self, function: ParseFunction, jsondata, htmldata):
         """
         测试parse_jsonpath函数
         """
@@ -91,7 +91,7 @@ class TestFunction(object):
         except Exception as e:
             assert True
 
-    def test_parse_xpath(self, function: Function, htmldata, jsondata):
+    def test_parse_xpath(self, function: ParseFunction, htmldata, jsondata):
         """
         测试parse_xpath函数
         """
@@ -117,7 +117,7 @@ class TestFunction(object):
         except Exception as e:
             assert True
 
-    def test_parse_regex(self, function: Function, htmldata, jsondata):
+    def test_parse_regex(self, function: ParseFunction, htmldata, jsondata):
         """
         测试parse_regex函数
         """
@@ -145,7 +145,7 @@ class TestFunction(object):
         regex = "编号：(.*?),"
         assert function.parse_regex(jsondata, regex) == []
 
-    def test_parse_css(self, function: Function, htmldata, jsondata):
+    def test_parse_css(self, function: ParseFunction, htmldata, jsondata):
         """
         测试parse_css函数
         """

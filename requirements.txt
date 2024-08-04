@@ -3,6 +3,7 @@ fake_useragent
 jsonpath_ng
 lxml
 pre-commit
+pytest
 pymongo
 pymysql
 scrapy

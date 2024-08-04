@@ -7,7 +7,7 @@ from universal_spider.tools.parse import RegexParser
 from universal_spider.tools.parse import CssParser
 
 
-class Function:
+class ParseFunction:
     """
     函数类
 

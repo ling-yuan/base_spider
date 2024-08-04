@@ -1,6 +1,6 @@
 import ast
 import re
-from universal_spider.tools.function import Function
+from universal_spider.tools.parse_funtion import ParseFunction
 
 # 可变参数pattern
 VARIABLE_CONTENT_PATTERN = r"\{(?P<type>[a-zA-Z_]+)\:(?P<content>.*?)\}"
@@ -9,7 +9,7 @@ FUNCTION_NAME_PATTERN = r"(?P<func_name>[a-zA-Z_]+)"
 FUNCTION_PARAMS_PATTERN = r"\((?P<params>.*?)\)"
 
 
-class Replacer(Function):
+class Replacer(ParseFunction):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
