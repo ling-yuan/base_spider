@@ -15,7 +15,7 @@ default_stage_template = {
         "form_params": {},
         "browser_config": {},
         "dont_filter": True,
-        "extract": {},
+        "extra_params": {},
     },
     "response": {  # 当前阶段响应
         "type": "",  # json/html/browser

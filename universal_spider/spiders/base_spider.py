@@ -44,6 +44,7 @@ class BaseSpider(scrapy.Spider):
         # 获取响应配置
         response_config = config["response"]
 
+        # 生成请求
         for req in self._generate_request(request_config, {}, now_index=now_index, response_config=response_config):
             yield req
 
@@ -51,9 +52,7 @@ class BaseSpider(scrapy.Spider):
         """
         根据请求配置和当前item，生成请求参数
         """
-        # ans = request_config.get(config_name, default)
         ans = request_config.pop(config_name, default)
-        # ans = item.get(f"next_{config_name}", ans)
         ans = item.pop(f"next_{config_name}", ans)
         ans = ans[0] if isinstance(ans, list) else ans
         return ans
