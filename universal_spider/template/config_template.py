@@ -13,7 +13,7 @@ default_stage_template = {
         "query_params": {},
         "json_params": {},
         "form_params": {},
-        "playwright_config": {},
+        "browser_config": {},
         "dont_filter": True,
         "extract": {},
     },
