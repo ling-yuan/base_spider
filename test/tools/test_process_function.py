@@ -84,7 +84,7 @@ class TestProcessFunction:
         assert result == ":2024/08/04 文章标题1"
 
         data = stringdata_list
-        func_params = "\d+"
+        func_params = "\\d+"
         result = process_function.str_remove_by_regex(data, func_params)
         assert result == [
             "时间:// 文章标题",
@@ -104,7 +104,7 @@ class TestProcessFunction:
         assert result == "金钱:2024/08/04 文章标题1"
 
         data = stringdata_list
-        func_params = "\d+,666"
+        func_params = "\\d+,666"
         result = process_function.str_replace_by_regex(data, func_params)
         assert result == [
             "时间:666/666/666 文章标题666",
@@ -116,6 +116,27 @@ class TestProcessFunction:
         # func_params = "时间,金钱"
         # result = process_function.str_replace_by_regex(data, func_params)
         # assert result == {}
+
+    def test_str_extract_by_regex(self, process_function: ProcessFunction, stringdata_str, stringdata_list):
+        data = stringdata_str
+        func_params = "时间:\\d+/\\d+/\\d+"
+        result = process_function.str_extract_by_regex(data, func_params)
+        assert result == "时间:2024/08/04"
+
+        data = stringdata_str
+        func_params = "(\\d+)/(\\d+)/\\d+"
+        result = process_function.str_extract_by_regex(data, func_params)
+        assert result == "202408"
+
+        data = stringdata_list
+        func_params = "\\d+"
+        result = process_function.str_extract_by_regex(data, func_params)
+        assert result == ["202408041", "202408042", "202408043"]
+
+        data = stringdata_list
+        func_params = "(\\d+)/(\\d+)/\\d+"
+        result = process_function.str_extract_by_regex(data, func_params)
+        assert result == ["202408", "202408", "202408"]
 
     def test_html_removetag_by_xpath(self, process_function: ProcessFunction, htmldata_str, htmldata_list):
         data = htmldata_str
@@ -185,4 +206,19 @@ class TestProcessFunction:
         assert result == [
             '<html><body><p style="color: red;">这是一个链接</p></body></html>',
             "<html><body><p>这是另一个链接</p></body></html>",
+        ]
+
+    def test_format_value(self, process_function: ProcessFunction, stringdata_str, stringdata_list):
+        data = stringdata_str
+        func_params = "格式化：{}"
+        result = process_function.format_value(data, func_params)
+        assert result == "格式化：时间:2024/08/04 文章标题1"
+
+        data = stringdata_list
+        func_params = "格式化：{}"
+        result = process_function.format_value(data, func_params)
+        assert result == [
+            "格式化：时间:2024/08/04 文章标题1",
+            "格式化：时间:2024/08/04 文章标题2",
+            "格式化：时间:2024/08/04 文章标题3",
         ]

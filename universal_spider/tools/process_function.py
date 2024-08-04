@@ -1,8 +1,10 @@
+from copy import deepcopy
+from functools import reduce
 import inspect
 import re
 from lxml import etree
 from universal_spider.tools import logger
-from universal_spider.tools.wapper import catch_wapper
+from universal_spider.tools.wapper import catch_wapper, deepcopy_wapper
 
 
 class ProcessFunction(object):
@@ -59,6 +61,7 @@ class ProcessFunction(object):
         string: 正则删除
         """
         if isinstance(data, list):
+            data = deepcopy(data)
             for i in range(len(data)):
                 data[i] = self.str_remove_by_regex(data[i], func_params)
             return data
@@ -75,6 +78,7 @@ class ProcessFunction(object):
         string: 正则替换
         """
         if isinstance(data, list):
+            data = deepcopy(data)
             for i in range(len(data)):
                 data[i] = self.str_replace_by_regex(data[i], func_params)
             return data
@@ -87,11 +91,32 @@ class ProcessFunction(object):
             return data
 
     @catch_wapper
+    def str_extract_by_regex(self, data, func_params: str, *args, **kwargs):
+        """
+        string: 正则提取
+        """
+        if isinstance(data, list):
+            data = deepcopy(data)
+            for i in range(len(data)):
+                data[i] = self.str_extract_by_regex(data[i], func_params)
+            return data
+        elif isinstance(data, str):
+            params = func_params.split(",")
+            value_list = []
+            for i in params:
+                value_list.extend(reduce(lambda x, y: x + y, re.findall(i, data)))
+            return reduce(lambda x, y: x + y, value_list)
+        else:
+            logger("str_extract_by_regex").warning("the type of data is not str or list")
+            return data
+
+    @catch_wapper
     def html_removetag_by_xpath(self, data, func_params: str, *args, **kwargs):
         """
         html: xpath删除标签
         """
         if isinstance(data, list):
+            data = deepcopy(data)
             for i in range(len(data)):
                 data[i] = self.html_removetag_by_xpath(data[i], func_params)
             return data
@@ -110,6 +135,7 @@ class ProcessFunction(object):
         html: xpath删除style
         """
         if isinstance(data, list):
+            data = deepcopy(data)
             for i in range(len(data)):
                 data[i] = self.html_removestyle_by_xpath(data[i], func_params)
             return data
@@ -129,6 +155,7 @@ class ProcessFunction(object):
         html: xpath替换标签
         """
         if isinstance(data, list):
+            data = deepcopy(data)
             for i in range(len(data)):
                 data[i] = self.html_replacetag_by_xpath(data[i], func_params)
             return data
@@ -142,4 +169,19 @@ class ProcessFunction(object):
             return etree.tostring(tree, encoding="utf-8").decode()
         else:
             logger("html_replacetag_by_xpath").warning("the type of data is not str or list")
+            return data
+
+    def format_value(self, data, func_params: str, *args, **kwargs):
+        """
+        格式化数据
+        """
+        if isinstance(data, list):
+            data = deepcopy(data)
+            for i in range(len(data)):
+                data[i] = self.format_value(data[i], func_params)
+            return data
+        elif isinstance(data, str):
+            return func_params.format(data)
+        else:
+            logger("format_value").warning("the type of data is not str or list")
             return data

@@ -1,3 +1,4 @@
+from copy import deepcopy
 import time
 from universal_spider.tools import logger
 
@@ -70,5 +71,20 @@ def catch_wapper(func):
             return func(*args, **kwargs)
         except Exception as e:
             logger(func.__name__).error(f"捕获异常: {e}")
+
+    return wrapper
+
+
+def deepcopy_wapper(func):
+    """
+    深拷贝装饰器
+
+    :param func: 函数
+    """
+
+    def wrapper(*args, **kwargs):
+        args = deepcopy(args)
+        kwargs = deepcopy(kwargs)
+        return func(*args, **kwargs)
 
     return wrapper
