@@ -22,7 +22,7 @@ make install
 >
 > 配置模板参考: [配置模板](./universal_spider/template/config_template.py)
 > 
-> 配置字段文档: [配置详解](./doc/配置详解.md)
+> 配置字段文档: [配置详解（未完）](./doc/配置详解.md)
 >
 > 测试配置: [测试配置](./doc/test_config.md)
 > 
@@ -44,7 +44,9 @@ make install
   - [X] mongodb
   - [ ] local csv/json/xlsx
   - [ ] 其他
-- [ ] 添加解析字段前后的额外处理逻辑
+- [ ] 添加解析字段的额外处理逻辑
+  - [ ] 解析前
+  - [X] 解析后
 - [ ] 添加浏览器的抓取方式
 - [ ] 其他
   - [ ] 添加接口方式提交配置进行抓取
