@@ -21,6 +21,19 @@ class ProcessFunction(object):
             self.function_dict[name] = func
 
     @catch_wapper
+    @deepcopy_wapper
+    def process_value(self, data, func_name: str, func_params: str, *args, **kwargs):
+        """
+        处理字段值
+        """
+        func = self.function_dict.get(func_name, None)
+        if func:
+            return func(data, func_params, *args, **kwargs)
+        else:
+            logger("process_value").warning("the function name is not exist")
+            raise ValueError("the function name is not exist")
+
+    @catch_wapper
     def browser_sleep(self, data, func_params: str, *args, **kwargs):
         """
         browser: 等待

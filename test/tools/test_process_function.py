@@ -77,6 +77,23 @@ class TestProcessFunction:
             "<a>这是另一个链接</a>",
         ]
 
+    def test_process_value(self, process_function: ProcessFunction, stringdata_str, stringdata_list):
+        data = stringdata_str
+        func_name = "str_remove_by_regex"
+        func_params = "时间"
+        result = process_function.process_value(data, func_name, func_params)
+        assert result == ":2024/08/04 文章标题1"
+
+        data = stringdata_list
+        func_name = "str_remove_by_regex"
+        func_params = "\\d+"
+        result = process_function.process_value(data, func_name, func_params)
+        assert result == [
+            "时间:// 文章标题",
+            "时间:// 文章标题",
+            "时间:// 文章标题",
+        ]
+
     def test_str_remove_by_regex(self, process_function: ProcessFunction, stringdata_str, stringdata_list):
         data = stringdata_str
         func_params = "时间"

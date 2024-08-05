@@ -2,7 +2,7 @@
 
 ## 博客园
 
-`解析参数`
+`解析参数` `解析后额外处理`
 
 * [x] 成功运行
 
@@ -30,6 +30,11 @@
                     "type": "str",
                 },
                 {
+                    "name": "url",
+                    "value": '{xpath://a[@class="post-item-title"]/@href}',
+                    "type": "url",
+                },
+                {
                     "name": "next_url",
                     "value": '{xpath://a[@class="post-item-title"]/@href}',
                     "type": "url",
@@ -50,6 +55,7 @@
                     "name": "read_times",
                     "value": "{regex:阅读\((.*?)\)}",
                     "type": "int",
+                    "after_process": [{"name": "str_extract_by_regex", "args": "\\d+"}],
                 },
             ],
         },

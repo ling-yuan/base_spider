@@ -112,7 +112,7 @@ class BaseSpider(scrapy.Spider):
         # 获取响应配置
         response_config = kwargs["response_config"]
         # 获取解析字段配置列表
-        field_list = response_config["fields"]
+        field_list = response_config.get("fields", [])
         # 获取当前响应的内容
         content = response.text if response_config.get("type", "html") else response.json()
         # 基于base_item，生成新item列表（一个或多个）
@@ -165,6 +165,8 @@ class BaseSpider(scrapy.Spider):
         item_copy = base_item.copy()
         for field_config in field_list:
             value = await self._parse_field(response, field_config, response_config)
+            value = await self._process_value(value, response, field_config, response_config)
+            value = value if value else field_config.get("default", "")
             save_length = field_config.get("save_length", 0)
             if save_length == 1 or save_length == "1":
                 value = reduce(lambda x, y: x + y, value)
@@ -194,7 +196,7 @@ class BaseSpider(scrapy.Spider):
         item_list = [{k: [value[i]] for k, value in item_copy.items()} for i in range(max_len)]
         return item_list
 
-    async def _parse_field(self, response: Response, field_config: dict, response_config: dict):
+    async def _parse_field(self, response: Response, field_config: dict, response_config: dict, *args, **kwargs):
         """
         根据单个字段配置，解析并返回结果
         """
@@ -203,3 +205,18 @@ class BaseSpider(scrapy.Spider):
         replacer = Replacer()
         _, new_value = replacer.replace(field_config["value"], data)
         return new_value
+
+    async def _process_value(
+        self, value, response: Response, field_config: dict, response_config: dict, *args, **kwargs
+    ):
+        """
+        根据解析后的值，进行后续处理
+        """
+        process_function = ProcessFunction()
+        process_list = field_config.get("after_process", [])
+        for process_config in process_list:
+            func_name = process_config.get("name", "")
+            func_args = process_config.get("args", "")
+            if func_name:
+                value = process_function.process_value(value, func_name, func_args)
+        return value
