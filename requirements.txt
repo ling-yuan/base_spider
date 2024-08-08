@@ -1,3 +1,4 @@
+aiostream
 colorlog
 fake_useragent
 jsonpath_ng
@@ -7,3 +8,4 @@ pytest
 pymongo
 pymysql
 scrapy
+scrapy-playwright

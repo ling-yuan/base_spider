@@ -2,6 +2,7 @@ from urllib.parse import urlencode
 import scrapy
 import scrapy.http
 from fake_useragent import UserAgent
+from playwright.async_api import Page
 
 
 def Request(
@@ -15,7 +16,7 @@ def Request(
     headers: dict = {},
     meta: dict = {},
     *args,
-    **kwargs
+    **kwargs,
 ):
     """
     根据传入参数构造请求
@@ -37,55 +38,60 @@ def Request(
     dont_filter = kwargs.get("dont_filter", True)  # 默认不过滤
 
     # 构造请求
-    if type == "api":
-        url = url + "?" + urlencode(query_params) if query_params else url
+    url = url + "?" + urlencode(query_params) if query_params else url
 
-        if form_params:
-            request = scrapy.http.FormRequest(
-                url=url,
-                method=method,
-                headers=headers,
-                cookies=cookies,
-                formdata=form_params,
-                meta=meta,
-                callback=callback,
-                cb_kwargs=cb_kwargs,
-                dont_filter=dont_filter,
-            )
-            return request
+    if type == "browser":
+        meta.update(
+            {
+                "playwright": True,  # 使用playwright
+                "playwright_include_page": True,  # 返回response中包含page
+                "playwright_page_init_callback": add_stealth_min_js_to_page,  # 添加stealth.min.js到page
+                "playwright_page_goto_kwargs": {
+                    "wait_until": "networkidle",
+                },  # 等待网络空闲
+            }
+        )
 
-        elif json_params:
-            request = scrapy.http.JsonRequest(
-                url=url,
-                method=method,
-                headers=headers,
-                cookies=cookies,
-                data=json_params,
-                meta=meta,
-                callback=callback,
-                cb_kwargs=cb_kwargs,
-                dont_filter=dont_filter,
-            )
-            return request
+    if form_params:
+        request = scrapy.http.FormRequest(
+            url=url,
+            method=method,
+            headers=headers,
+            cookies=cookies,
+            formdata=form_params,
+            meta=meta,
+            callback=callback,
+            cb_kwargs=cb_kwargs,
+            dont_filter=dont_filter,
+        )
+        return request
 
-        else:
-            request = scrapy.http.Request(
-                url=url,
-                method=method,
-                headers=headers,
-                cookies=cookies,
-                meta=meta,
-                callback=callback,
-                cb_kwargs=cb_kwargs,
-                dont_filter=dont_filter,
-            )
-            return request
+    elif json_params:
+        request = scrapy.http.JsonRequest(
+            url=url,
+            method=method,
+            headers=headers,
+            cookies=cookies,
+            data=json_params,
+            meta=meta,
+            callback=callback,
+            cb_kwargs=cb_kwargs,
+            dont_filter=dont_filter,
+        )
+        return request
 
-    elif type == "browser":
-        # TODO: 构造浏览器请求
-        pass
-
-    raise NotImplementedError("Request Method not implemented")
+    else:
+        request = scrapy.http.Request(
+            url=url,
+            method=method,
+            headers=headers,
+            cookies=cookies,
+            meta=meta,
+            callback=callback,
+            cb_kwargs=cb_kwargs,
+            dont_filter=dont_filter,
+        )
+        return request
 
 
 def header(dict=True):
@@ -95,3 +101,8 @@ def header(dict=True):
     else:
         headers = UserAgent().random
     return headers
+
+
+async def add_stealth_min_js_to_page(page: Page, request: scrapy.Request):
+    """添加stealth.min.js到page"""
+    await page.add_init_script(path=f"universal_spider/extra/stealth.min.js")

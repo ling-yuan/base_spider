@@ -8,7 +8,7 @@ NEWSPIDER_MODULE = "universal_spider.spiders"
 ROBOTSTXT_OBEY = False
 
 # Scrapy执行的最大并发请求数 (默认值: 16)
-CONCURRENT_REQUESTS = 8
+CONCURRENT_REQUESTS = 6
 
 # 下载延迟
 # DOWNLOAD_DELAY = 3
@@ -105,6 +105,26 @@ ITEM_PIPELINES = {
 REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
+
+# Playwright: handler
+# DOWNLOAD_HANDLERS = {
+#     "http": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler",
+#     "https": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler",
+# }
+DOWNLOAD_HANDLERS = {
+    "http": "universal_spider.handlers.playwright.PlaywrightDownloadHandler",
+    "https": "universal_spider.handlers.playwright.PlaywrightDownloadHandler",
+}
+
+
+PLAYWRIGHT_LAUNCH_OPTIONS = {
+    "timeout": 60 * 1000,
+    "headless": False,
+    # "devtools": True,
+}
+PLAYWRIGHT_DEFAULT_NAVIGATION_TIMEOUT = 60 * 1000
+PLAYWRIGHT_MAX_CONTEXTS = 3  # 最多同时几个浏览器
+PLAYWRIGHT_MAX_PAGES_PER_CONTEXT = 5  # 每个浏览器最多几个页面
 
 # 命令模块
 COMMANDS_MODULE = "universal_spider.commands"

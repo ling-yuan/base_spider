@@ -19,6 +19,7 @@ install: install_packages upgrade
 install_packages:
 	@echo "安装依赖..."
 	${VENV_PATH}/pip install -r requirements.txt -i ${MIRROR}
+	${VENV_PATH}/playwright install firefox chromium
 
 upgrade: upgrade_packages
 
