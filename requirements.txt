@@ -7,3 +7,4 @@ pytest
 pymongo
 pymysql
 scrapy
+DrissionPage

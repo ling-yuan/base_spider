@@ -37,16 +37,22 @@ DEFAULT_REQUEST_HEADERS = {
 # }
 
 # 参数
+
 ## 重定向
 REDIRECT_ENABLED = False
 REDIRECT_MAX_TIMES = 5
+
 ## 响应正常码
 ALLOWED_STATUS_LIST = []
+
 ## 随机延时
 ### 开启状态
 RANDOM_DELAY = False
 ### 范围
 RANDOM_DELAY_RANGE = (0, 3)
+
+## 浏览器设置
+HEADLESS = True
 
 # 额外所需参数 (中间件，扩展，管道)
 from universal_spider.Info import *
@@ -55,10 +61,10 @@ from universal_spider.Info import *
 DOWNLOADER_MIDDLEWARES = {
     # "universal_spider.middlewares.UniversalSpiderDownloaderMiddleware": 543,
     # process request
-    "universal_spider.middlewares.DrissionPageMiddleware": 1,
     "universal_spider.middlewares.UserAgentMiddleWare": 100,
     "universal_spider.middlewares.ProxyMiddleware": 200,
     "universal_spider.middlewares.RandomDelayMiddleware": 300,
+    "universal_spider.middlewares.DrissionPageMiddleware": 301,
     # process response
     # "universal_spider.middlewares.StatisticsMiddleware": 1,
     "universal_spider.middlewares.CookiesRedirectMiddleware": 600,
