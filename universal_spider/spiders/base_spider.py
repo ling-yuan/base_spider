@@ -165,6 +165,9 @@ class BaseSpider(scrapy.Spider):
                 else:
                     tmp_item = {k: v for k, v in item.items() if k in save_fields}
                     yield self._gennerate_item(tmp_item)
+            page: ChromiumPage = response.meta.get("page", None)
+            if page:
+                page.close()
             return
 
         # 循环每一项item
