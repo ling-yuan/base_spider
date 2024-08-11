@@ -2,6 +2,7 @@ from urllib.parse import urlencode
 import scrapy
 import scrapy.http
 from fake_useragent import UserAgent
+from playwright.async_api import Page
 
 
 def Request(
@@ -15,7 +16,7 @@ def Request(
     headers: dict = {},
     meta: dict = {},
     *args,
-    **kwargs
+    **kwargs,
 ):
     """
     根据传入参数构造请求
@@ -37,55 +38,55 @@ def Request(
     dont_filter = kwargs.get("dont_filter", True)  # 默认不过滤
 
     # 构造请求
-    if type == "api":
-        url = url + "?" + urlencode(query_params) if query_params else url
+    url = url + "?" + urlencode(query_params) if query_params else url
 
-        if form_params:
-            request = scrapy.http.FormRequest(
-                url=url,
-                method=method,
-                headers=headers,
-                cookies=cookies,
-                formdata=form_params,
-                meta=meta,
-                callback=callback,
-                cb_kwargs=cb_kwargs,
-                dont_filter=dont_filter,
-            )
-            return request
+    if type == "browser":
+        meta.update(
+            {
+                "drission": True,  # 使用drissionpage
+            }
+        )
 
-        elif json_params:
-            request = scrapy.http.JsonRequest(
-                url=url,
-                method=method,
-                headers=headers,
-                cookies=cookies,
-                data=json_params,
-                meta=meta,
-                callback=callback,
-                cb_kwargs=cb_kwargs,
-                dont_filter=dont_filter,
-            )
-            return request
+    if form_params:
+        request = scrapy.http.FormRequest(
+            url=url,
+            method=method,
+            headers=headers,
+            cookies=cookies,
+            formdata=form_params,
+            meta=meta,
+            callback=callback,
+            cb_kwargs=cb_kwargs,
+            dont_filter=dont_filter,
+        )
+        return request
 
-        else:
-            request = scrapy.http.Request(
-                url=url,
-                method=method,
-                headers=headers,
-                cookies=cookies,
-                meta=meta,
-                callback=callback,
-                cb_kwargs=cb_kwargs,
-                dont_filter=dont_filter,
-            )
-            return request
+    elif json_params:
+        request = scrapy.http.JsonRequest(
+            url=url,
+            method=method,
+            headers=headers,
+            cookies=cookies,
+            data=json_params,
+            meta=meta,
+            callback=callback,
+            cb_kwargs=cb_kwargs,
+            dont_filter=dont_filter,
+        )
+        return request
 
-    elif type == "browser":
-        # TODO: 构造浏览器请求
-        pass
-
-    raise NotImplementedError("Request Method not implemented")
+    else:
+        request = scrapy.http.Request(
+            url=url,
+            method=method,
+            headers=headers,
+            cookies=cookies,
+            meta=meta,
+            callback=callback,
+            cb_kwargs=cb_kwargs,
+            dont_filter=dont_filter,
+        )
+        return request
 
 
 def header(dict=True):

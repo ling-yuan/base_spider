@@ -5,6 +5,7 @@ default_stage_template = {
         "method": "",  # get/post...
         "iteration_times": 1,  # 当前阶段多个页面，迭代次数
         "meta": {
+            "drission": True,  # 使用drissionpage
             "proxy": "",  # 当前阶段请求的代理
             "dont_redirect": False,  # 当前阶段请求是否重定向
             "redirect_ttl": 5,  # 当前阶段请求最大重定向次数
