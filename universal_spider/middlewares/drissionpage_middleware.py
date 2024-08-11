@@ -1,7 +1,6 @@
 import asyncio
 import logging
-from time import sleep
-from DrissionPage import ChromiumPage
+from DrissionPage import ChromiumOptions, ChromiumPage
 from DrissionPage._pages.chromium_tab import ChromiumTab
 from scrapy import Request, Spider, signals
 from scrapy.crawler import Crawler
@@ -18,6 +17,14 @@ class DrissionPageMiddleware(object):
         logging.getLogger("urllib3.connectionpool").setLevel(logging.WARNING)
         self.max_page = settings.getint("MAX_PAGE", 5)
         self.page: ChromiumPage = None
+        self.option = ChromiumOptions()
+
+        # 设置默认选项
+        # self.option.incognito()  # 匿名模式
+        # self.option.set_argument('--no-sandbox')  # 无沙盒模式
+        self.option.set_argument("--window-size", "1920,1080")
+        if settings.getbool("HEADLESS", True):
+            self.option.headless()
 
     @classmethod
     def from_crawler(cls, crawler: Crawler):
@@ -39,12 +46,11 @@ class DrissionPageMiddleware(object):
 
     def open_browser(self):
         logger("DrissionPageMiddleware").info("Open browser")
-        self.page = ChromiumPage()
+        self.page = ChromiumPage(self.option)
         self.page.get("about:blank")
 
     def create_tab(self, url):
         tab: ChromiumTab = self.page.new_tab(url)
-        tab.wait.load_start()
         return tab
 
     async def process_request(self, request: Request, spider: Spider):

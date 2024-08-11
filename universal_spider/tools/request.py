@@ -33,6 +33,7 @@ def Request(
     if type == "api" and method.lower() not in ["get", "post", ...]:
         raise TypeError("Request Method must be 'get' or 'post'")
 
+    method = method.lower() if method else "get"
     cb_kwargs = kwargs.get("cb_kwargs", {})
     cookies = kwargs.get("cookies", {})
     dont_filter = kwargs.get("dont_filter", True)  # 默认不过滤

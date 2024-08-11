@@ -240,9 +240,14 @@ class BaseSpider(scrapy.Spider):
         """
         根据单个字段配置，解析并返回结果
         """
-        data = await self._get_content(index, response)
-        replacer = Replacer()
-        _, new_value = replacer.replace(field_config["value"], data)
+        resp_type = self._response_type(index)
+        if resp_type == "browser":
+            replacer = BrowserReplacer()
+            _, new_value = replacer.replace(field_config["value"], response.meta["page"])
+        else:
+            data = await self._get_content(index, response)
+            replacer = Replacer()
+            _, new_value = replacer.replace(field_config["value"], data)
         return new_value
 
     async def _process_value(self, value, response: Response, field_config: dict, *args, **kwargs):
