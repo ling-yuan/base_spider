@@ -55,6 +55,7 @@ from universal_spider.Info import *
 DOWNLOADER_MIDDLEWARES = {
     # "universal_spider.middlewares.UniversalSpiderDownloaderMiddleware": 543,
     # process request
+    "universal_spider.middlewares.DrissionPageMiddleware": 1,
     "universal_spider.middlewares.UserAgentMiddleWare": 100,
     "universal_spider.middlewares.ProxyMiddleware": 200,
     "universal_spider.middlewares.RandomDelayMiddleware": 300,
