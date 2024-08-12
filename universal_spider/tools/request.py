@@ -2,7 +2,6 @@ from urllib.parse import urlencode
 import scrapy
 import scrapy.http
 from fake_useragent import UserAgent
-from playwright.async_api import Page
 
 
 def Request(
