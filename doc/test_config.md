@@ -224,3 +224,86 @@
     },
 ]
 ```
+
+## 包子漫画
+
+`多阶段` `解析后处理` `多种解析方式`
+
+* [x] 成功运行
+
+```python
+[
+    {
+        "request": {
+            "type": "api",
+            "url": "https://m.baozimh.one/manga/page/{function:add(1)}",
+            "method": "get",
+            "iteration_times": 1,
+        },
+        "response": {
+            "type": "html",
+            "fields": [
+                {
+                    "name": "title",
+                    "value": '{xpath://h3[@class="cardtitle"]/text()}',
+                    "type": "str",
+                },
+                {
+                    "name": "url",
+                    "value": '{xpath://div[@class="container"]/div/div[@class="pb-2"]/a/@href}',
+                    "type": "str",
+                },
+                {
+                    "name": "next_url",
+                    "value": '{xpath://div[@class="container"]/div/div[@class="pb-2"]/a/@href}',
+                    "type": "str",
+                    "after_process": [{"name": "str_replace_by_regex", "args": "manga,chapterlist"}],
+                },
+            ],
+        },
+    },
+    {
+        "request": {
+            "type": "api",
+            "method": "get",
+        },
+        "response": {
+            "type": "html",
+            "fields": [
+                {
+                    "name": "next_url",
+                    "value": '{xpath://div[@id="allchapters"]/@data-mid}',
+                    "type": "str",
+                    "after_process": [
+                        {
+                            "name": "format_value",
+                            "args": "https://api-get.mgsearcher.com/api/manga/get?mid={}&mode=all",
+                        },
+                    ],
+                },
+            ],
+        },
+    },
+    {
+        "request": {
+            "type": "api",
+            "method": "get",
+        },
+        "response": {
+            "type": "json",
+            "fields": [
+                {
+                    "name": "chapter_title",
+                    "value": "{jsonpath:$.data.chapters[*].attributes.title}",
+                    "type": "str",
+                },
+                {
+                    "name": "chapter_url",
+                    "value": "{var:url}/{jsonpath:$.data.chapters[*].attributes.slug}",
+                    "type": "str",
+                },
+            ],
+        },
+    },
+]
+```
