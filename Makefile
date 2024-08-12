@@ -12,6 +12,7 @@ setup: venv install
 
 venv:
 	@echo "创建虚拟环境..."
+	pip3 install virtualenv -i ${MIRROR}
 	virtualenv -p python3 .venv
 
 install: install_packages upgrade
@@ -34,9 +35,10 @@ export_requirements:
 
 format_code: pre-commit
 	@echo "格式化代码..."
+	${VENV_PATH}/pipp install pre-commit -i ${MIRROR}
 	${VENV_PATH}/pre-commit run --a
-# .venv\Scripts\black main.py --line-length 120
-# .venv\Scripts\black universal_spider --line-length 120
+# ${VENV_PATH}/black main.py --line-length 120
+# .${VENV_PATH}/black universal_spider --line-length 120
 
 .PHONY: test
 test:

@@ -2,30 +2,23 @@
 
 ## 前提环境
 
-[python 官网](https://www.python.org/)
+[python](https://www.python.org/)
 
 [make (windows)](https://gnuwin32.sourceforge.net/packages/make.htm)
 
-## 安装
+[Chrome](https://www.google.com/chrome/)
 
-```bash
-make
-```
-
-```bash
-make install
-```
-
-在main.py中修改配置信息即可运行
-
+## 使用
 > [!note]
+>
+> 环境配置: [环境配置](./doc/环境配置.md)
 >
 > 配置模板参考: [配置模板](./universal_spider/template/config_template.py)
 > 
-> 配置字段文档: [配置详解（未完）](./doc/配置详解.md)
+> 配置字段文档: [配置详解](./doc/配置详解.md)
 >
 > 测试配置: [测试配置](./doc/test_config.md)
-> 
+>
 
 # 待办
 
@@ -47,7 +40,7 @@ make install
 - [ ] 添加解析字段的额外处理逻辑
   - [ ] 解析前
   - [X] 解析后
-- [ ] 添加浏览器的抓取方式
+- [X] 添加浏览器的抓取方式
 - [ ] 其他
   - [ ] 添加接口方式提交配置进行抓取
   - [ ] 封装成容器
