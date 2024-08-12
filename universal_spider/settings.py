@@ -47,12 +47,9 @@ ALLOWED_STATUS_LIST = []
 
 ## 随机延时
 ### 开启状态
-RANDOM_DELAY = False
+RANDOM_DELAY = True
 ### 范围
 RANDOM_DELAY_RANGE = (0, 3)
-
-## 浏览器设置
-HEADLESS = True
 
 # 额外所需参数 (中间件，扩展，管道)
 from universal_spider.Info import *

@@ -20,11 +20,19 @@ class DrissionPageMiddleware(object):
         self.option = ChromiumOptions()
 
         # 设置默认选项
+        paths = settings.getdict("DRISSIONPAGE_PATHS", {})
+        self.option.set_paths(**paths)
         # self.option.incognito()  # 匿名模式
-        # self.option.set_argument('--no-sandbox')  # 无沙盒模式
-        self.option.set_argument("--window-size", "1920,1080")
-        if settings.getbool("HEADLESS", True):
+        if settings.getbool("DRISSIONPAGE_HEADLESS", True):
             self.option.headless()
+        arguments = settings.getlist("DRISSIONPAGE_ARGUMENTS", [])
+        for arg in arguments:
+            arg, value = (
+                (arg, None)
+                if isinstance(arg, str)
+                else (arg[0], arg[1]) if isinstance(arg, (tuple, list)) else str(arg)
+            )
+            self.option.set_argument(arg, value)
 
     @classmethod
     def from_crawler(cls, crawler: Crawler):
@@ -73,8 +81,8 @@ class DrissionPageMiddleware(object):
 
     def spider_closed(self, spider: Spider):
         try:
-            logger("DrissionPageMiddleware").info("Close browser")
             self.page.quit()
+            logger("DrissionPageMiddleware").info("Close browser")
         except:
             logger("DrissionPageMiddleware").info("Browser is not open")
             pass
