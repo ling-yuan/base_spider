@@ -35,7 +35,7 @@ export_requirements:
 
 format_code: pre-commit
 	@echo "格式化代码..."
-	${VENV_PATH}/pipp install pre-commit -i ${MIRROR}
+	${VENV_PATH}/pip install pre-commit -i ${MIRROR}
 	${VENV_PATH}/pre-commit run --a
 # ${VENV_PATH}/black main.py --line-length 120
 # .${VENV_PATH}/black universal_spider --line-length 120
