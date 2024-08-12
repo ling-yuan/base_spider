@@ -204,6 +204,7 @@ class BaseSpider(scrapy.Spider):
                 index,
                 response,
                 field_config,
+                item=deepcopy(base_item),
             )
             value = await self._process_value(value, response, field_config)
             value = value if value else field_config.get("default", "")
@@ -243,11 +244,11 @@ class BaseSpider(scrapy.Spider):
         resp_type = self._response_type(index)
         if resp_type == "browser":
             replacer = BrowserReplacer()
-            _, new_value = replacer.replace(field_config["value"], response.meta["page"])
+            _, new_value = replacer.replace(field_config["value"], response.meta["page"], *args, **kwargs)
         else:
             data = await self._get_content(index, response)
             replacer = Replacer()
-            _, new_value = replacer.replace(field_config["value"], data)
+            _, new_value = replacer.replace(field_config["value"], data, *args, **kwargs)
         return new_value
 
     async def _process_value(self, value, response: Response, field_config: dict, *args, **kwargs):
