@@ -1,6 +1,5 @@
 import logging
 from scrapy import Item, Spider
-import pymongo
 from pymongo import MongoClient
 from universal_spider.tools.logger import logger
 
@@ -33,6 +32,7 @@ class MongoPipeline:
     def process_item(self, item: Item, spider: Spider):
         # 插入数据，不显示日志
         self.collection.insert_one(dict(item))
-
-        logger("MongoPipeline").debug(f"Item: {dict(item)} is inserted into MongoDB")
+        item_info = str(dict(item))
+        item_info = item_info[:100] + "..." if len(item_info) > 100 else item_info
+        logger("MongoPipeline").debug(f"Item: {item_info} is inserted into MongoDB")
         return item

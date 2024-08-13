@@ -210,7 +210,7 @@ class BaseSpider(scrapy.Spider):
             value = value if value else field_config.get("default", "")
             save_length = field_config.get("save_length", 0)
             if save_length == 1 or save_length == "1":
-                value = reduce(lambda x, y: x + y, value)
+                # value = reduce(lambda x, y: x + y, value)
                 value = [value]
             elif save_length == 0 or save_length == "0":
                 pass

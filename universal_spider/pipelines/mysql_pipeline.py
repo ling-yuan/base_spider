@@ -54,6 +54,7 @@ class MySQLPipeline:
         data = dict(item)
         self.cursor.execute(f"INSERT INTO {self.mysql_table} (id, data) VALUES (%s, %s)", (id, str(data)))
         self.conn.commit()
-
-        logger("MySQLPipeline").debug(f"Item: {dict(item)} is inserted into Mysql")
+        item_info = str(dict(item))
+        item_info = item_info[:100] + "..." if len(item_info) > 100 else item_info
+        logger("MySQLPipeline").debug(f"Item: {item_info} is inserted into Mysql")
         return item
