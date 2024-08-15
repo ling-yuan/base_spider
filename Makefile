@@ -12,7 +12,7 @@ setup: venv install
 
 venv:
 	@echo "创建虚拟环境..."
-	pip3 install virtualenv -i ${MIRROR}
+	pip install virtualenv -i ${MIRROR}
 	virtualenv -p python3 .venv
 
 install: install_packages upgrade
