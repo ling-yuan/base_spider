@@ -66,6 +66,7 @@ class BaseSpider(scrapy.Spider):
             field_value = self._get_param_config(config_field, request_config, item, default_value)
             request_config[config_field] = field_value
         iteration_times = request_config.pop("iteration_times", 1)
+        iteration_times = int(iteration_times)
         while iteration_times > 0:
             iteration_times -= 1
             new_item = deepcopy(item)
