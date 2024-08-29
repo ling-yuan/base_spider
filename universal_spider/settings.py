@@ -77,7 +77,7 @@ DOWNLOADER_MIDDLEWARES = {
 ITEM_PIPELINES = {
     # "universal_spider.pipelines.UniversalSpiderPipeline": 300,
     "universal_spider.pipelines.MongoPipeline": 100,
-    "universal_spider.pipelines.MySQLPipeline": 200,
+    # "universal_spider.pipelines.MySQLPipeline": 200,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
