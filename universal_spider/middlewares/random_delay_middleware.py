@@ -22,6 +22,6 @@ class RandomDelayMiddleware(object):
     def process_request(self, request: Request, spider: Spider):
         if self.use:
             delay = random.uniform(*self.delay)
-            logger("RandomDelayMiddleware").debug(f"Random delay: {delay:.3f}")
+            # logger("RandomDelayMiddleware").debug(f"Random delay: {delay:.3f}")
             time.sleep(delay)
         # 不能返回请求, 否则会导致请求被重复处理（即多次随机延时进入死循环）

@@ -90,7 +90,7 @@ class BaseSpider(scrapy.Spider):
         ans = ans[0] if isinstance(ans, list) else ans
         return ans
 
-    async def _generate_request(self, index: int, item: dict, response="", *args, **kwargs):
+    async def _generate_request(self, index: int, item: dict, response: Response = "", *args, **kwargs):
         """
         根据请求配置和当前item，生成请求
         """
@@ -99,6 +99,19 @@ class BaseSpider(scrapy.Spider):
         item = deepcopy(item)
         # 获取上个阶段的内容
         content: str = await self._get_content(index - 1, response)
+        # 获取响应中的cookies
+        cookies = {}
+        if cookies_headers := response.headers.get("Cookie"):
+            cookies_headers = cookies_headers.decode().split(";")
+            for i in cookies_headers:
+                cookies[i.split("=")[0]] = i.split("=")[1]
+
+        if cookies_headers_set := response.headers.get("Set-Cookie"):
+            cookies_headers_set = cookies_headers_set.decode("utf-8").split(";")
+            for i in cookies_headers_set:
+                cookies[i.split("=")[0]] = i.split("=")[1]
+        cookies = ";".join([f"{key}={value}" for key, value in cookies.items()])
+
         # 定义替换器
         replacer = Replacer()
         # 获取配置
@@ -117,6 +130,9 @@ class BaseSpider(scrapy.Spider):
             default_value = 1 if config_field == "iteration_times" else None if config_field == "url" else {}
             field_value = self._get_param_config(config_field, request_config, item, default_value)
             request_config[config_field] = field_value
+        if cookies:
+            if not request_config.get("headers").get("Cookie"):
+                request_config["headers"]["Cookie"] = cookies
 
         iteration_times = request_config.pop("iteration_times", 1)
         iteration_times = int(iteration_times)
